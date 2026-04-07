@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 
+# Product interface
 class Animal(ABC):
     @abstractmethod
     def speak(self):
         pass
 
+# Concrete Products
 class Dog(Animal):
     def speak(self):
         return "Woof!"
@@ -13,21 +15,34 @@ class Cat(Animal):
     def speak(self):
         return "Meow!"
 
-class AnimalFactory:
-    @staticmethod
-    def get_animal(animal_type: str) -> Animal:
-        if animal_type.lower() == "dog":
-            return Dog()
-        elif animal_type.lower() == "cat":
-            return Cat()
-        raise ValueError("Tipo de animal desconocido")
+# Creator (Factory Method definition)
+class AnimalFactory(ABC):
+    @abstractmethod
+    def create_animal(self) -> Animal:
+        pass
+
+    def perform_action(self):
+        animal = self.create_animal()
+        return animal.speak()
+
+# Concrete Creators
+class DogFactory(AnimalFactory):
+    def create_animal(self) -> Animal:
+        return Dog()
+
+class CatFactory(AnimalFactory):
+    def create_animal(self) -> Animal:
+        return Cat()
 
 if __name__ == "__main__":
     print("Demostración de Factory Method:")
-    factory = AnimalFactory()
     
-    perro = factory.get_animal("dog")
-    gato = factory.get_animal("cat")
+    # We rely on Concrete Creators to spawn the proper instances
+    dog_factory = DogFactory()
+    cat_factory = CatFactory()
+    
+    perro = dog_factory.create_animal()
+    gato = cat_factory.create_animal()
     
     print(f"El perro dice: {perro.speak()}")
     print(f"El gato dice: {gato.speak()}")
