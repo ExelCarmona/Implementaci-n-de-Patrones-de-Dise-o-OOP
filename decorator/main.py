@@ -3,19 +3,19 @@ from abc import ABC, abstractmethod
 # Component Interface
 class Coffee(ABC):
     @abstractmethod
-    def get_cost(self):
-        pass
+    def get_cost(self) -> float:
+        raise NotImplementedError
 
     @abstractmethod
-    def get_description(self):
-        pass
+    def get_description(self) -> str:
+        raise NotImplementedError
 
 # Concrete Component
 class SimpleCoffee(Coffee):
-    def get_cost(self):
+    def get_cost(self) -> float:
         return 2.0
 
-    def get_description(self):
+    def get_description(self) -> str:
         return "Café simple"
 
 # Base Decorator
@@ -23,25 +23,25 @@ class CoffeeDecorator(Coffee):
     def __init__(self, coffee: Coffee):
         self._coffee = coffee
 
-    def get_cost(self):
+    def get_cost(self) -> float:
         return self._coffee.get_cost()
 
-    def get_description(self):
+    def get_description(self) -> str:
         return self._coffee.get_description()
 
 # Concrete Decorators using super() correctly
 class MilkDecorator(CoffeeDecorator):
-    def get_cost(self):
+    def get_cost(self) -> float:
         return super().get_cost() + 0.5
 
-    def get_description(self):
+    def get_description(self) -> str:
         return super().get_description() + ", con Leche"
 
 class VanillaDecorator(CoffeeDecorator):
-    def get_cost(self):
+    def get_cost(self) -> float:
         return super().get_cost() + 0.7
 
-    def get_description(self):
+    def get_description(self) -> str:
         return super().get_description() + ", con Vainilla"
 
 if __name__ == "__main__":
